@@ -1,0 +1,191 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <stack>
+#include <deque>
+#include <set>
+#include <cmath>
+#include <iomanip>
+#include <string>
+#include <map>
+#include <unordered_map>
+#include <unordered_set>
+#include <array>
+#include <list>
+#include <tuple>
+#include <numeric>
+#include <climits>
+#include <cctype>
+#include <utility>
+#define giyu ios_base::sync_with_stdio(false); cin.tie(nullptr);
+#define int long long
+#define pb push_back
+#define pq priority_queue
+#define lmn LLONG_MIN
+#define lmx LLONG_MAX
+#define unmp unordered_map
+#define unmlp unordered_multimap
+#define unst unordered_set
+#define unmst unordered_multiset
+#pragma GCC optimize("O2")
+#pragma GCC optimize("unroll-loops")
+using namespace std;
+
+struct Item {
+    string name;
+    string type;
+    int damage;
+    int price;
+};
+
+void Printing(vector<Item>& a) {
+    for (auto i = a.begin(); i != a.end(); ++i) {
+        cout << i->name << " " << i->type << " " << i->damage << " " << i->price << endl;
+    }
+}
+
+void MostPricey(vector<Item>& a) {
+    int mx = LLONG_MIN;
+    string h;
+    for (auto i = a.begin(); i != a.end(); ++i) {
+        if (i->price > mx) {
+            mx = i->price;
+            h = i->name;
+        }
+    }
+
+    cout << "MOST EXPENSIVE ITEM: " << h << endl << "PRICE: " << mx << endl;
+}
+
+void FindWeapon(string s, vector<Item>& a) {
+    bool t = false;
+
+    for (auto i = a.begin(); i != a.end(); ++i) {
+        if (i->name == s && !t) {
+            cout << "Found!" << endl << "Damage: " << i->damage << endl << "Price: " << i->price << endl;
+            t = true;
+        }
+    }
+
+    if (!t) {
+        cout << "Not Found!" << endl;
+    }
+}
+
+void AddDamage(string s, vector<Item>& a) {
+    for (auto i = a.begin(); i != a.end(); ++i) {
+        if (i->type == s) {
+            cout << i->name << ": " << i->damage << " -> " << i->damage + 10 << endl;
+            i->damage += 10;
+        }
+    }
+}
+
+void Deleting(vector<Item>& a) {
+    for (auto i = a.begin(); i != a.end(); ++i) {
+        if (i->price < 300) {
+            i = a.erase(i);
+        }
+    }
+}
+
+void HowManyTypes(vector<Item>& a) {
+    set<string> st;
+
+    for (auto i = a.begin(); i != a.end(); ++i) {
+        st.insert(i->type);
+    }
+
+    for (auto i = st.begin(); i != st.end(); i++) {
+        cout << *i << endl;
+    }
+}
+
+void HowManyCountTypes(vector<Item>& a) {
+    map<string, int> st;
+
+    for (auto i = a.begin(); i != a.end(); ++i) {
+        st[i->type]++;
+    }
+
+    for (auto i = st.begin(); i != st.end(); i++) {
+        cout << i->first << " " << i->second << endl;
+    }
+}
+
+void ReversePrinting(vector<Item>& a) {
+    for (auto i = a.rbegin(); i != a.rend(); ++i) {
+        cout << i->name << endl;
+    }
+}
+
+void BonusAdd(string s, vector<Item>& a) {
+    bool t = false;
+    for (auto i = a.begin(); i != a.end(); ++i) {
+        if (i->name == s && !t) {
+            cout << i->name << ": " << i->price << " -> " << i->price + 500 << endl;
+            i->price += 500;
+            t = true;
+        }
+    }
+
+    if (!t) {
+        cout << "Not Found!" << endl;
+    }
+}
+
+signed main() {
+    giyu
+
+    int menu;
+
+    vector<Item> EVERYTHING = {
+        {"Iron Sword", "Weapon", 25, 500},
+        {"Fire Sword", "Weapon", 60, 2500},
+        {"Wooden Shield", "Shield", 5, 200},
+        {"Dragon Shield", "Shield", 30, 5000},
+        {"Health Potion", "Potion", 0, 100},
+        {"Mana Potion", "Potion", 0, 150},
+        {"Bow", "Weapon", 35, 1200}
+    };
+
+    while (cin >> menu && menu != 0) {
+        if (menu == 1) {
+            Printing(EVERYTHING);
+        }
+        else if (menu == 2) {
+            MostPricey(EVERYTHING);
+        }
+        else if (menu == 3) {
+            string s;
+            getline(cin, s);
+
+            FindWeapon(s, EVERYTHING);
+        }
+        else if (menu == 4) {
+            string s;
+            cin >> s;
+
+            AddDamage(s, EVERYTHING);
+
+            string h;
+            cin >> h;
+            cin.ignore();
+
+            BonusAdd(h, EVERYTHING);
+        }
+        else if (menu == 5) {
+            Deleting(EVERYTHING);
+        }
+        else if (menu == 6) {
+            HowManyTypes(EVERYTHING);
+        }
+        else if (menu == 7) {
+            HowManyCountTypes(EVERYTHING);
+        }
+        else if (menu == 8) {
+            ReversePrinting(EVERYTHING);
+        }
+    }
+}
